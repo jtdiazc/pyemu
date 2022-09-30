@@ -127,8 +127,8 @@ def dataframe_to_smp(
 
     """
     formatters = {
-        "name": lambda x: "{0:<20s}".format(str(x)[:max_name_len]),
-        "value": lambda x: value_format.format(x),
+        name_col: lambda x: "{0:<20s}".format(str(x)[:max_name_len]),
+        value_col: lambda x: value_format.format(x),
     }
     if datetime_format.lower().startswith("d"):
         dt_fmt = "%d/%m/%Y    %H:%M:%S"
@@ -142,7 +142,7 @@ def dataframe_to_smp(
     for col in [name_col, datetime_col, value_col]:
         assert col in dataframe.columns
 
-    dataframe.loc[:, "datetime_str"] = dataframe.loc[:, "datetime"].apply(
+    dataframe.loc[:, "datetime_str"] = dataframe.loc[:, datetime_col].apply(
         lambda x: x.strftime(dt_fmt)
     )
     if isinstance(smp_filename, str):
